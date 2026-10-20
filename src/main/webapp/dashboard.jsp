@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pages.css">
 </head>
 <body>
 <!-- El contenedor conserva la distribución original de la maqueta. -->
@@ -17,30 +19,23 @@
       <h1>Ferretería<br>El Tornillo S.A.C.</h1>
       <p>Alternativa 1 - Web JSP/Servlets</p>
     </div>
-    <nav>
-      <a class="nav-item active" href="${pageContext.request.contextPath}/dashboard.jsp"><span class="ic">◆</span> Dashboard Principal</a>
-      <a class="nav-item" href="${pageContext.request.contextPath}/Pages/catalogo.html"><span class="ic">▤</span> Catálogo e Inventario</a>
-      <a class="nav-item" href="${pageContext.request.contextPath}/Pages/ventas.html"><span class="ic">₪</span> Punto de Venta</a>
-      <a class="nav-item" href="${pageContext.request.contextPath}/Pages/recepcion.html"><span class="ic">▣</span> Recepción de Mercadería</a>
-      <a class="nav-item" href="${pageContext.request.contextPath}/kardex"><span class="ic">≡</span> Kardex y Reportes</a>
-    </nav>
-    <div class="nav-foot">Almacén · datos en memoria<br>Sesión: almacén-01</div>
+    <%@ include file="/WEB-INF/jspf/sidebar-nav.jspf" %>
   </aside>
 
-  <div class="hazard" style="position:fixed;"></div>
+  <div class="hazard hazard-fixed"></div>
   <main class="main">
     <div class="topbar">
       <span class="path" id="crumb">/dashboard</span>
-      <div class="user"><span class="role-pill">Rol: Administrador</span><div class="avatar">MJ</div></div>
+      <div class="user"><span class="role-pill">Rol: <c:out value="${sessionScope.usuario.rol.etiqueta}"/></span><div class="avatar"><c:out value="${sessionScope.usuario.iniciales}"/></div></div>
     </div>
     <div class="content">
       <section class="view active" id="view-1">
         <div class="page-head"><div class="eyebrow">Pantalla 01</div><h2>Dashboard Principal</h2></div>
         <div class="divider"></div>
-        <div class="grid g4" style="margin-bottom:18px;">
+        <div class="grid g4 dashboard-kpis">
           <div class="card kpi"><div class="lbl">Ventas de hoy</div><div class="val">S/ 3,842</div><div class="delta up">▲ 12% vs. ayer</div></div>
           <div class="card kpi"><div class="lbl">Boletas / facturas</div><div class="val">57</div><div class="delta up">▲ 5 más que ayer</div></div>
-          <div class="card kpi"><div class="lbl">Productos bajo stock mínimo</div><div class="val" style="color:var(--red)">14</div><div class="delta down">requieren reposición</div></div>
+          <div class="card kpi"><div class="lbl">Productos bajo stock mínimo</div><div class="val text-danger">14</div><div class="delta down">requieren reposición</div></div>
           <div class="card kpi"><div class="lbl">Clientes atendidos</div><div class="val">41</div><div class="delta up">▲ 3 nuevos</div></div>
         </div>
         <div class="grid g2">
@@ -56,13 +51,17 @@
           </div>
           <div class="card">
             <div class="section-title"><span class="n">B</span> Accesos directos por rol</div>
-            <div class="grid g2" style="gap:12px;">
-              <a class="btn btn-primary" style="padding:16px;text-align:center;" href="${pageContext.request.contextPath}/Pages/ventas.html">Nueva venta</a>
-              <a class="btn btn-ghost" style="padding:16px;text-align:center;" href="${pageContext.request.contextPath}/Pages/recepcion.html">Registrar ingreso</a>
-              <a class="btn btn-ghost" style="padding:16px;text-align:center;" href="${pageContext.request.contextPath}/kardex">Ver kardex</a>
-              <a class="btn btn-ghost" style="padding:16px;text-align:center;" href="${pageContext.request.contextPath}/Pages/catalogo.html">Gestionar catálogo</a>
+            <div class="grid g2 dashboard-shortcuts">
+              <c:if test="${sessionScope.usuario.rol.etiqueta eq 'Administrador' or sessionScope.usuario.rol.etiqueta eq 'Cajero'}">
+                <a class="btn btn-primary shortcut-btn" href="${pageContext.request.contextPath}/Pages/ventas.jsp">Nueva venta</a>
+              </c:if>
+              <c:if test="${sessionScope.usuario.rol.etiqueta eq 'Administrador' or sessionScope.usuario.rol.etiqueta eq 'Almacenero'}">
+                <a class="btn btn-ghost shortcut-btn" href="${pageContext.request.contextPath}/Pages/recepcion.jsp">Registrar ingreso</a>
+                <a class="btn btn-ghost shortcut-btn" href="${pageContext.request.contextPath}/kardex">Ver kardex</a>
+                <a class="btn btn-ghost shortcut-btn" href="${pageContext.request.contextPath}/Pages/catalogo.jsp">Gestionar catálogo</a>
+              </c:if>
             </div>
-            <p class="stub-note">Los accesos varían según el rol de sesión (cajero, almacenero, administrador).</p>
+            <p class="stub-note">Se muestran los accesos disponibles para tu rol.</p>
           </div>
         </div>
       </section>

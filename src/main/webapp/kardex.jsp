@@ -8,34 +8,28 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pages.css">
 </head>
 <body>
 <!-- La vista presenta los movimientos preparados por KardexServlet. -->
 <div class="app">
   <aside class="sidebar">
     <div class="brand"><span class="stamp">FERRESYS · JAVA EE</span><h1>Ferretería<br>El Tornillo S.A.C.</h1><p>Alternativa 1 - Web JSP/Servlets</p></div>
-    <nav>
-      <a class="nav-item" href="${pageContext.request.contextPath}/dashboard.jsp"><span class="ic">◆</span> Dashboard Principal</a>
-      <a class="nav-item" href="${pageContext.request.contextPath}/Pages/catalogo.html"><span class="ic">▤</span> Catálogo e Inventario</a>
-      <a class="nav-item" href="${pageContext.request.contextPath}/Pages/ventas.html"><span class="ic">₪</span> Punto de Venta</a>
-      <a class="nav-item" href="${pageContext.request.contextPath}/Pages/recepcion.html"><span class="ic">▣</span> Recepción de Mercadería</a>
-      <a class="nav-item active" href="${pageContext.request.contextPath}/kardex"><span class="ic">≡</span> Kardex y Reportes</a>
-    </nav>
-    <div class="nav-foot">Almacén · datos en memoria<br>Sesión: almacén-01</div>
+    <%@ include file="/WEB-INF/jspf/sidebar-nav.jspf" %>
   </aside>
-  <div class="hazard" style="position:fixed;"></div>
+  <div class="hazard hazard-fixed"></div>
   <main class="main">
-    <div class="topbar"><span class="path">/almacen/kardex</span><div class="user"><span class="role-pill">Rol: Administrador</span><div class="avatar">MJ</div></div></div>
+    <div class="topbar"><span class="path">/almacen/kardex</span><div class="user"><span class="role-pill">Rol: <c:out value="${sessionScope.usuario.rol.etiqueta}"/></span><div class="avatar"><c:out value="${sessionScope.usuario.iniciales}"/></div></div></div>
     <div class="content">
       <section class="view active">
         <div class="page-head"><div class="eyebrow">Pantalla 05</div><h2>Kardex y Reporte de Movimientos</h2></div>
         <div class="divider"></div>
         <div class="toolbar">
           <div class="search">🔍 Filtrar por producto o SKU…</div>
-          <div style="display:flex;gap:8px;"><span class="chip on">Todos</span><span class="chip">Entradas</span><span class="chip">Salidas</span><span class="chip">Mermas</span></div>
+          <div class="chip-group"><span class="chip on">Todos</span><span class="chip">Entradas</span><span class="chip">Salidas</span><span class="chip">Mermas</span></div>
           <a class="btn btn-primary" href="${pageContext.request.contextPath}/kardex?action=exportar">Exportar a Excel</a>
         </div>
-        <div class="card" style="padding:0;"><table>
+        <div class="card table-card"><table>
           <tr><th>Fecha</th><th>SKU</th><th>Producto</th><th>Tipo</th><th>Cant.</th><th>Saldo</th></tr>
           <c:forEach var="movimiento" items="${movimientos}">
             <tr>

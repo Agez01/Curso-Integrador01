@@ -1,9 +1,11 @@
-# Rutas locales de Java, Maven y Tomcat; edítalas si cambian en tu equipo.
+# Las rutas de cada computadora viven en run.config.ps1 (no se sube a Git).
+# Si no existe, copia run.config.example.ps1 como run.config.ps1 y edítalo.
 $ProjectRoot = $PSScriptRoot
-$JavaHome = 'C:\Program Files\Java\jdk-24'
-$MavenCommand = 'C:\Program Files\NetBeans-20\netbeans\java\maven\bin\mvn.cmd'
-$TomcatHome = 'C:\Users\Diego\AppData\Local\Programs\apache-tomcat-10.1.61'
-$TomcatHttpPort = 8090
+$configLocal = Join-Path $ProjectRoot 'run.config.ps1'
+if (-not (Test-Path -LiteralPath $configLocal)) {
+    throw "Falta run.config.ps1. Copia run.config.example.ps1 como run.config.ps1 y ajusta tus rutas."
+}
+. $configLocal
 
 $ErrorActionPreference = 'Stop'
 

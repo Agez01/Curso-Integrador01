@@ -1,0 +1,10 @@
+# Compilación y logs
+target/
+logs/
+# Configuración local de cada integrante (rutas de su PC)
+run.config.ps1
+# IDEs
+.vscode/
+.idea/
+*.iml
+nbproject/private/

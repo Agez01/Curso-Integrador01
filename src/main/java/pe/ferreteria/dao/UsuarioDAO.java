@@ -1,13 +1,13 @@
 package pe.ferreteria.dao;
 
-import java.util.Map;
+import pe.ferreteria.model.Usuario;
 
-/** Valida usuarios de prueba en memoria para la maqueta del curso. */
-public class UsuarioDAO {
-    private static final Map<String, String> USUARIOS_DEMO = Map.of("admin", "admin123");
+import java.util.Optional;
 
-    public boolean autenticar(String usuario, String clave) {
-        return usuario != null && clave != null
-                && clave.equals(USUARIOS_DEMO.get(usuario));
-    }
+/** Contrato de acceso a usuarios. Hoy hay implementación en memoria; mañana puede ser JDBC. */
+public interface UsuarioDAO {
+    Optional<Usuario> buscarPorNombre(String nombre);
+
+    /** Devuelve el usuario si el nombre y la clave son correctos. */
+    Optional<Usuario> autenticar(String nombre, String clave);
 }

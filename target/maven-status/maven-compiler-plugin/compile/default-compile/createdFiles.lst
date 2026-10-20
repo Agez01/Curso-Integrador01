@@ -1,8 +1,0 @@
-pe\ferreteria\controller\LoginServlet.class
-pe\ferreteria\model\MovimientoKardex.class
-pe\ferreteria\controller\KardexServlet.class
-pe\ferreteria\util\ExcelExportador.class
-pe\ferreteria\controller\VentaServlet.class
-pe\ferreteria\dao\KardexDAO.class
-pe\ferreteria\controller\EntradaServlet.class
-pe\ferreteria\dao\UsuarioDAO.class

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pe.ferreteria.dao.DaoFactory;
 import pe.ferreteria.dao.KardexDAO;
 import pe.ferreteria.util.ExcelExportador;
 
@@ -16,7 +17,7 @@ import java.io.IOException;
 @WebServlet("/kardex")
 public class KardexServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(KardexServlet.class);
-    private final KardexDAO kardexDAO = KardexDAO.getInstancia();
+    private final KardexDAO kardexDAO = DaoFactory.kardexDAO();
     private final ExcelExportador excelExportador = new ExcelExportador();
 
     @Override
@@ -27,6 +28,7 @@ public class KardexServlet extends HttpServlet {
             response.setHeader("Content-Disposition", "attachment; filename=\"kardex.xlsx\"");
             try {
                 excelExportador.exportarKardex(kardexDAO.listar(), response.getOutputStream());
+                LOGGER.info("Kardex exportado a Excel.");
             } catch (IOException exception) {
                 LOGGER.error("No se pudo generar la descarga del kardex.", exception);
                 throw exception;
