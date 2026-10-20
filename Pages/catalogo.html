@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Catálogo e Inventario | Ferretería El Tornillo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<!-- .app es el padre general y usa Flexbox para sidebar y main. -->
+<div class="app">
+  <!-- Sidebar hijo de .app; sus elementos se organizan verticalmente con Flexbox. -->
+  <aside class="sidebar">
+    <div class="brand"><span class="stamp">FERRESYS · JAVA EE</span><h1>Ferretería<br>El Tornillo S.A.C.</h1><p>Alternativa 1 - Web JSP/Servlets</p></div>
+    <!-- Los enlaces son hijos de nav y conectan las páginas dentro de Pages/. -->
+    <nav>
+      <a class="nav-item" href="../index.html"><span class="ic">◆</span> Dashboard Principal</a>
+      <a class="nav-item active" href="catalogo.html"><span class="ic">▤</span> Catálogo e Inventario</a>
+      <a class="nav-item" href="ventas.html"><span class="ic">₪</span> Punto de Venta</a>
+      <a class="nav-item" href="recepcion.html"><span class="ic">▣</span> Recepción de Mercadería</a>
+      <a class="nav-item" href="kardex.html"><span class="ic">≡</span> Kardex y Reportes</a>
+    </nav>
+    <div class="nav-foot">PostgreSQL · JDBC directo<br>Sesión: almacén-01</div>
+  </aside>
+  <div class="hazard" style="position:fixed;"></div>
+  <!-- main es hijo de .app y usa Flexbox vertical para topbar y content. -->
+  <main class="main">
+    <div class="topbar"><span class="path">/inventario/catalogo</span><div class="user"><span class="role-pill">Rol: Administrador</span><div class="avatar">MJ</div></div></div>
+    <div class="content">
+      <!-- Página de catálogo: toolbar Flexbox, tabla hija de su tarjeta. -->
+      <section class="view active">
+        <div class="page-head"><div class="eyebrow">Pantalla 02</div><h2>Gestión de Catálogo e Inventario</h2></div>
+        <div class="divider"></div>
+        <!-- toolbar usa Flexbox; buscador, filtros y botón son sus hijos. -->
+        <div class="toolbar">
+          <div class="search">🔍 Buscar por nombre, código o SKU…</div>
+          <div style="display:flex;gap:8px;"><span class="chip on">Todas</span><span class="chip">Ferretería</span><span class="chip">Construcción</span><span class="chip">Gasfitería</span><span class="chip">Pinturas</span></div>
+          <button class="btn btn-primary">+ Nuevo producto</button>
+        </div>
+        <div class="card" style="padding:0;"><table>
+          <tr><th>SKU</th><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Estado</th><th></th></tr>
+          <tr><td class="mono">FR-1042</td><td>Martillo carpintero 16oz</td><td>Ferretería</td><td>S/ 28.50</td><td>32</td><td><span class="badge b-ok">Normal</span></td><td><button class="btn btn-ghost">Editar</button></td></tr>
+          <tr><td class="mono">CN-0087</td><td>Cemento Sol Tipo I x 42.5kg</td><td>Construcción</td><td>S/ 31.00</td><td>3</td><td><span class="badge b-low">Crítico</span></td><td><button class="btn btn-ghost">Editar</button></td></tr>
+          <tr><td class="mono">GF-0215</td><td>Tubo PVC 1/2&quot; x 5m</td><td>Gasfitería</td><td>S/ 14.90</td><td>11</td><td><span class="badge b-mid">Bajo</span></td><td><button class="btn btn-ghost">Editar</button></td></tr>
+          <tr><td class="mono">PT-0330</td><td>Pintura látex blanco 1gal</td><td>Pinturas</td><td>S/ 46.00</td><td>9</td><td><span class="badge b-mid">Bajo</span></td><td><button class="btn btn-ghost">Editar</button></td></tr>
+          <tr><td class="mono">FR-1108</td><td>Tornillos autorroscantes 1&quot; (caja x100)</td><td>Ferretería</td><td>S/ 9.50</td><td>58</td><td><span class="badge b-ok">Normal</span></td><td><button class="btn btn-ghost">Editar</button></td></tr>
+        </table></div>
+        <p class="stub-note">Tabla interactiva: ordenable por columna, con paginación y filtro combinado por categoría + texto.</p>
+      </section>
+    </div>
+  </main>
+</div>
+</body>
+</html>

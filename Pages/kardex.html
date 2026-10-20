@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Kardex y Reportes | Ferretería El Tornillo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<!-- .app es el padre general y usa Flexbox para sidebar y main. -->
+<div class="app">
+  <!-- Sidebar hijo de .app; organiza marca, navegación y pie con Flexbox vertical. -->
+  <aside class="sidebar">
+    <div class="brand"><span class="stamp">FERRESYS · JAVA EE</span><h1>Ferretería<br>El Tornillo S.A.C.</h1><p>Alternativa 1 - Web JSP/Servlets</p></div>
+    <!-- Los enlaces son hijos de nav y conectan las páginas dentro de Pages/. -->
+    <nav>
+      <a class="nav-item" href="../index.html"><span class="ic">◆</span> Dashboard Principal</a>
+      <a class="nav-item" href="catalogo.html"><span class="ic">▤</span> Catálogo e Inventario</a>
+      <a class="nav-item" href="ventas.html"><span class="ic">₪</span> Punto de Venta</a>
+      <a class="nav-item" href="recepcion.html"><span class="ic">▣</span> Recepción de Mercadería</a>
+      <a class="nav-item active" href="kardex.html"><span class="ic">≡</span> Kardex y Reportes</a>
+    </nav>
+    <div class="nav-foot">PostgreSQL · JDBC directo<br>Sesión: almacén-01</div>
+  </aside>
+  <div class="hazard" style="position:fixed;"></div>
+  <!-- main es hijo de .app y usa Flexbox vertical para topbar y content. -->
+  <main class="main">
+    <div class="topbar"><span class="path">/almacen/kardex</span><div class="user"><span class="role-pill">Rol: Administrador</span><div class="avatar">MJ</div></div></div>
+    <div class="content">
+      <!-- Kardex: toolbar Flexbox y tabla hija de la tarjeta de resultados. -->
+      <section class="view active">
+        <div class="page-head"><div class="eyebrow">Pantalla 05</div><h2>Kardex y Reporte de Movimientos</h2></div>
+        <div class="divider"></div>
+        <div class="toolbar">
+          <div class="search">🔍 Filtrar por producto o SKU…</div>
+          <!-- Este grupo hijo usa Flexbox para mostrar los filtros en línea. -->
+          <div style="display:flex;gap:8px;"><span class="chip on">Todos</span><span class="chip">Entradas</span><span class="chip">Salidas</span><span class="chip">Mermas</span></div>
+        </div>
+        <div class="card" style="padding:0;"><table>
+          <tr><th>Fecha</th><th>SKU</th><th>Producto</th><th>Tipo</th><th>Cant.</th><th>Saldo</th></tr>
+          <tr><td class="mono">25/08</td><td class="mono">CN-0087</td><td>Cemento Sol Tipo I</td><td><span class="badge b-ok">Entrada</span></td><td>+80</td><td>83</td></tr>
+          <tr><td class="mono">25/08</td><td class="mono">FR-1108</td><td>Tornillos autorroscantes 1&quot;</td><td><span class="badge b-low">Salida</span></td><td>-12</td><td>58</td></tr>
+          <tr><td class="mono">24/08</td><td class="mono">PT-0330</td><td>Pintura látex blanco</td><td><span class="badge b-mid">Merma</span></td><td>-2</td><td>9</td></tr>
+          <tr><td class="mono">24/08</td><td class="mono">GF-0215</td><td>Tubo PVC 1/2&quot;</td><td><span class="badge b-low">Salida</span></td><td>-5</td><td>11</td></tr>
+        </table></div>
+        <p class="stub-note">Reporte exportable a PDF/Excel, con trazabilidad completa por producto y rango de fechas.</p>
+      </section>
+    </div>
+  </main>
+</div>
+</body>
+</html>
