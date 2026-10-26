@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pages.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pages.css?v=2">
 </head>
 <body>
 <!-- .app es el padre general y usa Flexbox para sidebar y main. -->
@@ -49,19 +49,19 @@
         <p class="stub-note">Catálogo de demostración en memoria: los nuevos registros se pierden al reiniciar la aplicación.</p>
         <section class="card catalogo-form" id="nuevo-producto" aria-labelledby="titulo-producto">
           <h3 class="section-title" id="titulo-producto">Registrar producto</h3>
-          <form method="post" action="${pageContext.request.contextPath}/productos">
+          <form class="catalogo-fields" method="post" action="${pageContext.request.contextPath}/productos">
             <input type="hidden" name="token" value="<c:out value='${sessionScope.tokenCatalogo}'/>">
-            <div class="grid g2">
-              <div><label for="sku">SKU</label><input id="sku" name="sku" maxlength="30" pattern="[A-Za-z0-9][A-Za-z0-9_-]{0,29}" required value="<c:out value='${param.sku}'/>"></div>
-              <div><label for="nombre">Nombre del producto</label><input id="nombre" name="nombre" maxlength="120" required value="<c:out value='${param.nombre}'/>"></div>
-              <div><label for="categoria">Categoría</label><select id="categoria" name="categoria" required>
+            <div class="catalogo-field"><label for="sku">SKU</label><input id="sku" name="sku" maxlength="30" pattern="[A-Za-z0-9][A-Za-z0-9_-]{0,29}" required value="<c:out value='${param.sku}'/>"></div>
+            <div class="catalogo-field"><label for="nombre">Nombre del producto</label><input id="nombre" name="nombre" maxlength="120" required value="<c:out value='${param.nombre}'/>"></div>
+            <div class="catalogo-field"><label for="categoria">Categoría</label><select id="categoria" name="categoria" required>
                 <option value="">Selecciona una categoría</option>
                 <c:forEach var="categoria" items="${categorias}"><option value="<c:out value='${categoria}'/>" ${param.categoria eq categoria ? 'selected' : ''}><c:out value="${categoria}"/></option></c:forEach>
               </select></div>
-              <div><label for="unidad">Unidad de medida</label><input id="unidad" name="unidad" maxlength="30" placeholder="Unidad, caja, bolsa…" required value="<c:out value='${param.unidad}'/>"></div>
-              <div><label for="precio">Precio de venta (S/)</label><input id="precio" name="precio" type="number" min="0" max="999999999.99" step="0.01" required value="<c:out value='${param.precio}'/>"></div>
+            <div class="catalogo-field"><label for="unidad">Unidad de medida</label><input id="unidad" name="unidad" maxlength="30" placeholder="Unidad, caja, bolsa…" required value="<c:out value='${param.unidad}'/>"></div>
+            <div class="catalogo-field"><label for="precio">Precio de venta (S/)</label><input id="precio" name="precio" type="number" min="0" max="999999999.99" step="0.01" required value="<c:out value='${param.precio}'/>"></div>
+            <div class="catalogo-actions">
+              <button class="btn btn-primary catalogo-submit" type="submit">Guardar producto</button>
             </div>
-            <button class="btn btn-primary catalogo-submit" type="submit">Guardar producto</button>
           </form>
         </section>
       </section>
