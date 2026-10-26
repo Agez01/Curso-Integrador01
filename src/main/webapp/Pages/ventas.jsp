@@ -39,16 +39,16 @@
           </div>
           <div class="card">
             <div class="section-title"><span class="n">2</span> Carrito de venta</div>
-            <div class="cart-row"><span>Martillo carpintero 16oz ×1</span><span>S/ 28.50</span></div>
-            <div class="cart-row"><span>Tornillos autorroscantes 1&quot; ×2</span><span>S/ 19.00</span></div>
-            <div class="cart-row"><span>Tubo PVC 1/2&quot; x 5m ×3</span><span>S/ 44.70</span></div>
-            <div class="cart-total"><span>Total</span><span>S/ 92.20</span></div>
+            <!-- El carrito se llena dinámicamente al pulsar Agregar. -->
+            <div id="carrito-items" aria-live="polite"><p>Carrito vacío. Agrega un producto para empezar.</p></div>
+            <div class="cart-total"><span>Total</span><span id="carrito-total">S/ 0.00</span></div>
             <div class="checkout-details">
               <div class="section-title section-title-compact"><span class="n">3</span> Cliente y comprobante</div>
               <div class="search search-wide search-customer">👤 DNI / RUC del cliente…</div>
               <!-- Los chips son hijos de este contenedor Flexbox. -->
               <div class="chip-group"><span class="chip on">Boleta</span><span class="chip">Factura</span></div>
-              <button class="btn btn-primary checkout-submit">Emitir comprobante</button>
+              <!-- Se habilitará cuando el servlet registre ventas reales. -->
+              <button class="btn btn-primary checkout-submit" type="button" disabled title="Pendiente: conectar la venta con el servidor">Emitir comprobante (próximamente)</button>
             </div>
           </div>
         </div>
@@ -56,5 +56,67 @@
     </div>
   </main>
 </div>
+<script>
+// Etapa 1: carrito dinámico en la pantalla. NO registra ventas ni modifica el Kardex.
+(() => {
+  "use strict";
+  const tablaProductos = document.querySelector(".pos-layout .card:first-child table");
+  const contenedor = document.getElementById("carrito-items");
+  const totalElemento = document.getElementById("carrito-total");
+  const carrito = new Map();
+  const moneda = new Intl.NumberFormat("es-PE", { style: "currency", currency: "PEN" });
+
+  function mostrarCarrito() {
+    contenedor.replaceChildren();
+    let totalCentimos = 0;
+    if (carrito.size === 0) {
+      const aviso = document.createElement("p");
+      aviso.textContent = "Carrito vacío. Agrega un producto para empezar.";
+      contenedor.appendChild(aviso);
+    }
+    for (const [clave, producto] of carrito) {
+      const subtotalCentimos = producto.precioCentimos * producto.cantidad;
+      totalCentimos += subtotalCentimos;
+      const fila = document.createElement("div");
+      fila.className = "cart-row";
+      const descripcion = document.createElement("span");
+      descripcion.textContent = producto.nombre + " ×" + producto.cantidad;
+      const importe = document.createElement("span");
+      importe.textContent = moneda.format(subtotalCentimos / 100) + " ";
+      const quitar = document.createElement("button");
+      quitar.type = "button";
+      quitar.className = "btn";
+      quitar.textContent = "Quitar";
+      quitar.setAttribute("aria-label", "Quitar una unidad de " + producto.nombre);
+      quitar.addEventListener("click", () => {
+        if (producto.cantidad === 1) carrito.delete(clave);
+        else producto.cantidad -= 1;
+        mostrarCarrito();
+      });
+      importe.appendChild(quitar);
+      fila.append(descripcion, importe);
+      contenedor.appendChild(fila);
+    }
+    totalElemento.textContent = moneda.format(totalCentimos / 100);
+  }
+
+  for (const [indice, fila] of Array.from(tablaProductos.querySelectorAll("tr")).entries()) {
+    const celdas = fila.querySelectorAll("td");
+    const boton = fila.querySelector("button");
+    if (celdas.length < 2 || !boton) continue;
+    boton.type = "button";
+    boton.addEventListener("click", () => {
+      const nombre = celdas[0].textContent.trim();
+      const precioTexto = celdas[1].textContent.replace(/[^\d.]/g, "");
+      const precioCentimos = Math.round(Number(precioTexto) * 100);
+      if (!Number.isSafeInteger(precioCentimos) || precioCentimos < 0) return;
+      if (carrito.has(indice)) carrito.get(indice).cantidad += 1;
+      else carrito.set(indice, { nombre, precioCentimos, cantidad: 1 });
+      mostrarCarrito();
+    });
+  }
+  mostrarCarrito();
+})();
+</script>
 </body>
 </html>
