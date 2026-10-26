@@ -73,3 +73,15 @@
 .confirm-reception-btn {
   margin-top: 16px;
 }
+
+.catalogo-form { margin-top: 20px; }
+.catalogo-form label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; }
+.catalogo-form input:not([type="hidden"]),
+.catalogo-form select {
+  width: 100%; padding: 10px; border: 1px solid var(--line); border-radius: 3px;
+  font: inherit; background: var(--white); color: var(--ink);
+}
+.catalogo-submit { margin-top: 16px; }
+.catalogo-message { padding: 12px; border-radius: 3px; }
+.catalogo-success { background: #E1F0E3; color: #285334; }
+.catalogo-error { background: #FBE4E1; color: #922B21; }

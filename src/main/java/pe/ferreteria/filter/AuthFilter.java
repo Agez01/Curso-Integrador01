@@ -37,6 +37,7 @@ public class AuthFilter implements Filter {
             .put("/entrada", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
             .put("/Pages/recepcion", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
             .put("/Pages/catalogo", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
+            .put("/productos", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
             .put("/venta", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.CAJERO))
             .put("/Pages/ventas", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.CAJERO))
             .build();

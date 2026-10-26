@@ -31,6 +31,13 @@ Reglas: la JSP no tiene SQL ni lógica de negocio · el servlet no accede a dato
 5. Pruebas: `mvn test`
 
 ## Reparto de módulos
+### Catálogo: primer incremento funcional
+- Administrador y almacenero pueden consultar y registrar productos desde **Catálogo e Inventario** (`/productos`; la URL anterior `/Pages/catalogo.jsp` sigue funcionando).
+- El formulario solicita SKU único, nombre, una de las cuatro categorías actuales, unidad y precio de venta. La búsqueda consulta por nombre o SKU.
+- Los cinco productos de la maqueta son la carga inicial. Los registros se comparten entre sesiones y se pierden al reiniciar Tomcat.
+- Este incremento no modifica existencias: la conexión con entradas de almacén, edición, gestión de categorías y PostgreSQL se implementará en pasos posteriores.
+- Comprobación: entrar como `admin` o `almacen`, guardar un producto y buscar su SKU; intentar repetirlo debe mostrar un error sin reemplazar el original. `cajero` no tiene acceso al módulo.
+
 | Integrante | Módulo (JSP + Servlet + DAO + pruebas) | Librería a evidenciar |
 |---|---|---|
 | Diego | Base, login/seguridad, Kardex y Reportes | Logback, Apache POI |

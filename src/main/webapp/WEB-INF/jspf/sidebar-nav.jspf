@@ -2,7 +2,7 @@
 <nav>
   <a class="nav-item ${pageContext.request.servletPath eq '/dashboard.jsp' ? 'active' : ''}" href="${pageContext.request.contextPath}/dashboard.jsp"><span class="ic">◆</span> Dashboard Principal</a>
   <c:if test="${sessionScope.usuario.rol.etiqueta eq 'Administrador' or sessionScope.usuario.rol.etiqueta eq 'Almacenero'}">
-    <a class="nav-item ${pageContext.request.servletPath eq '/Pages/catalogo.jsp' ? 'active' : ''}" href="${pageContext.request.contextPath}/Pages/catalogo.jsp"><span class="ic">▤</span> Catálogo e Inventario</a>
+    <a class="nav-item ${catalogoActivo or pageContext.request.servletPath eq '/Pages/catalogo.jsp' ? 'active' : ''}" href="${pageContext.request.contextPath}/Pages/catalogo.jsp"><span class="ic">▤</span> Catálogo e Inventario</a>
   </c:if>
   <c:if test="${sessionScope.usuario.rol.etiqueta eq 'Administrador' or sessionScope.usuario.rol.etiqueta eq 'Cajero'}">
     <a class="nav-item ${pageContext.request.servletPath eq '/Pages/ventas.jsp' ? 'active' : ''}" href="${pageContext.request.contextPath}/Pages/ventas.jsp"><span class="ic">₪</span> Punto de Venta</a>

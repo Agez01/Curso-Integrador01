@@ -7,6 +7,7 @@ package pe.ferreteria.dao;
 public final class DaoFactory {
     private static final UsuarioDAO USUARIO_DAO = new UsuarioDAOMemoria();
     private static final KardexDAO KARDEX_DAO = new KardexDAOMemoria();
+    private static final ProductoDAO PRODUCTO_DAO = new ProductoDAOMemoria();
 
     private DaoFactory() {
     }
@@ -17,5 +18,9 @@ public final class DaoFactory {
 
     public static KardexDAO kardexDAO() {
         return KARDEX_DAO;
+    }
+
+    public static ProductoDAO productoDAO() {
+        return PRODUCTO_DAO;
     }
 }
