@@ -18,8 +18,7 @@ Reglas: la JSP no tiene SQL ni lógica de negocio · el servlet no accede a dato
 1. Copia `run.config.example.ps1` como `run.config.ps1` y pon las rutas de TU PC (este archivo no se sube a Git).
 2. En la terminal del proyecto: `.\run.ps1` → abre `http://localhost:8090/ferresys/`
 3. Detener: `Ctrl+C` o `.\stop.ps1`.
-4. Alternativa sin `run.ps1`: `mvn -Dtomcat.home="C:\ruta\a\apache-tomcat-10.1.x" package cargo:run`. Esto compila, inicia el Tomcat instalado y despliega el WAR; abre `http://localhost:8090/ferresys/`. Detén con `Ctrl+C`. No inicies este modo mientras otra instancia use el puerto 8090.
-5. Pruebas: `mvn test`
+4. Pruebas: `mvn test`
 
 ## Reparto de módulos
 ### Catálogo: primer incremento funcional
