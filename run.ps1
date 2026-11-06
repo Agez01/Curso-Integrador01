@@ -32,6 +32,14 @@ if ($serverConfiguration -notmatch $connectorPattern) {
     throw "Configura el puerto HTTP $TomcatHttpPort en $serverXml antes de iniciar Tomcat."
 }
 
+# La conexión a PostgreSQL vive en db.properties (no se sube a Git). Si falta, se crea desde el ejemplo.
+$dbConfig = Join-Path $ProjectRoot 'src\main\resources\db.properties'
+if (-not (Test-Path -LiteralPath $dbConfig)) {
+    Copy-Item -LiteralPath (Join-Path $ProjectRoot 'src\main\resources\db.example.properties') -Destination $dbConfig
+    Write-Warning "Se creó $dbConfig. Edita db.password con la clave de tu PostgreSQL y vuelve a ejecutar."
+    exit 1
+}
+
 # Detiene la instancia anterior antes de reemplazar el WAR.
 & (Join-Path $ProjectRoot 'stop.ps1') -TomcatHome $TomcatHome -TomcatHttpPort $TomcatHttpPort
 

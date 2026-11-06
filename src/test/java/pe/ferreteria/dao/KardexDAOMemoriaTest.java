@@ -31,7 +31,7 @@ class KardexDAOMemoriaTest {
         assertThrows(IllegalArgumentException.class,
                 () -> dao.registrar("x", "Cemento Sol Tipo I", "Entrada", 0, "admin"));
         assertThrows(IllegalArgumentException.class,
-                () -> dao.registrar("x", "Cemento Sol Tipo I", "Merma", 1, "admin"));
+                () -> dao.registrar("x", "Cemento Sol Tipo I", "Otro", 1, "admin"));
     }
 
     @Test

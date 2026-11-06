@@ -8,3 +8,6 @@ run.config.ps1
 .idea/
 *.iml
 nbproject/private/
+
+# Configuración local de la base de datos (contiene la clave)
+src/main/resources/db.properties

@@ -42,8 +42,8 @@ public class KardexDAOMemoria implements KardexDAO {
                                                     int cantidad, String usuario) {
         Preconditions.checkArgument(StringUtils.isNotBlank(producto) && StringUtils.isNotBlank(usuario),
                 "El producto y el usuario son obligatorios.");
-        Preconditions.checkArgument("Entrada".equals(tipo) || "Salida".equals(tipo),
-                "El tipo debe ser Entrada o Salida.");
+        Preconditions.checkArgument("Entrada".equals(tipo) || "Salida".equals(tipo) || "Merma".equals(tipo),
+                "El tipo debe ser Entrada, Salida o Merma.");
         Preconditions.checkArgument(cantidad > 0, "La cantidad debe ser mayor que cero.");
 
         int stockActual = existencias.getOrDefault(producto, 0);

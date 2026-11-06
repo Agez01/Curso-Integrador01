@@ -25,7 +25,6 @@ Reglas: la JSP no tiene SQL ni lógica de negocio · el servlet no accede a dato
 - Administrador y almacenero pueden consultar y registrar productos desde **Catálogo e Inventario** (`/productos`; la URL anterior `/Pages/catalogo.jsp` sigue funcionando).
 - El formulario solicita SKU único, nombre, una de las cuatro categorías actuales, unidad y precio de venta. La búsqueda consulta por nombre o SKU.
 - Los cinco productos de la maqueta son la carga inicial. Los registros se comparten entre sesiones y se pierden al reiniciar Tomcat.
-- Este incremento no modifica existencias: la conexión con entradas de almacén, edición, gestión de categorías y PostgreSQL se implementará en pasos posteriores.
 - Comprobación: entrar como `admin` o `almacen`, guardar un producto y buscar su SKU; intentar repetirlo debe mostrar un error sin reemplazar el original. `cajero` no tiene acceso al módulo.
 
 ## Flujo de Git
@@ -34,3 +33,33 @@ Reglas: la JSP no tiene SQL ni lógica de negocio · el servlet no accede a dato
 - Integrar con Pull Request a `main`; revisar que `mvn test` pase antes de aceptar.
 - También suban los entregables (informe, diagramas) para tener evidencia del 100%.
 - Nunca subir `target/`, `logs/` ni `run.config.ps1` (ya están en `.gitignore`).
+
+
+## Base de datos PostgreSQL
+
+Requiere PostgreSQL 14 o superior.
+
+1. Como administrador de Postgres: `psql -U postgres -f db/01_crear_bd.sql` (crea el rol `ferresys` y la base; cambia la clave del script antes).
+2. `psql -U ferresys -d ferresys -f db/02_esquema.sql` (tablas; **borra los datos** si se vuelve a ejecutar).
+3. `psql -U ferresys -d ferresys -f db/03_datos_demo.sql` (usuarios y productos de demostración).
+4. Copia `src/main/resources/db.example.properties` como `db.properties` y pon tu clave (`run.ps1` lo hace por ti la primera vez). Ese archivo no se sube a Git. También se pueden usar las variables `DB_URL`, `DB_USER`, `DB_PASSWORD`.
+
+Usuarios de demostración: `admin/admin123`, `cajero/cajero123`, `almacen/almacen123`.
+
+Las pruebas `JdbcIntegracionTest` solo corren si hay base configurada; **modifican datos**, úsalas solo con la base de demostración.
+
+## Roles y módulos (según los casos de uso)
+
+| Caso de uso | Ruta | Roles |
+|---|---|---|
+| CU-01 Iniciar sesión | `/login` | Todos |
+| CU-02 Gestionar usuarios y roles | `/usuarios` | Administrador |
+| CU-03 Gestionar catálogo | `/productos` | Administrador, Almacenero |
+| CU-04 Registrar entrada | `/entrada` | Almacenero |
+| CU-05 Ajustar existencias (merma) | `/ajuste` | Administrador, Almacenero |
+| CU-06 Dashboard | `/dashboard` | Todos |
+| CU-07 Registrar venta y comprobante | `/venta` | Cajero |
+| CU-08 Gestionar clientes | `/clientes` | Administrador, Cajero |
+| CU-09 Kardex y Excel | `/kardex` | Administrador, Almacenero |
+
+CU-10 (reportes) se cubre con el dashboard y la exportación del kardex a Excel.

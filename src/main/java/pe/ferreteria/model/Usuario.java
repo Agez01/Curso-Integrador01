@@ -5,8 +5,14 @@ public class Usuario {
     private final String nombre;
     private final String claveHash;
     private final Rol rol;
+    private final boolean activo;
 
     public Usuario(String nombre, String claveHash, Rol rol) {
+        this(nombre, claveHash, rol, true);
+    }
+
+    public Usuario(String nombre, String claveHash, Rol rol, boolean activo) {
+        this.activo = activo;
         this.nombre = nombre;
         this.claveHash = claveHash;
         this.rol = rol;
@@ -22,6 +28,10 @@ public class Usuario {
 
     public Rol getRol() {
         return rol;
+    }
+
+    public boolean isActivo() {
+        return activo;
     }
 
     /** Iniciales para el avatar de la barra superior. */

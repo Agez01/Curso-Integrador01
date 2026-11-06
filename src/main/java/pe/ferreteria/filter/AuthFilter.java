@@ -33,13 +33,23 @@ public class AuthFilter implements Filter {
 
     /** Ruta (prefijo) -> roles autorizados. Lo que no figura aquí solo exige sesión iniciada. */
     private static final Map<String, Set<Rol>> REGLAS = ImmutableMap.<String, Set<Rol>>builder()
-            .put("/kardex", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
-            .put("/entrada", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
-            .put("/Pages/recepcion", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
-            .put("/Pages/catalogo", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
+            // CU-02 Gestionar usuarios y roles: Administrador
+            .put("/usuarios", ImmutableSet.of(Rol.ADMINISTRADOR))
+            // CU-08 Gestionar clientes: Cajero y Administrador
+            .put("/clientes", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.CAJERO))
+            // CU-03 Gestionar catálogo: Administrador y Almacenero
             .put("/productos", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
-            .put("/venta", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.CAJERO))
-            .put("/Pages/ventas", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.CAJERO))
+            .put("/Pages/catalogo", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
+            // CU-04 Registrar entrada de mercadería: Almacenero
+            .put("/entrada", ImmutableSet.of(Rol.ALMACENERO))
+            .put("/Pages/recepcion", ImmutableSet.of(Rol.ALMACENERO))
+            // CU-05 Ajustar existencias (merma): Almacenero y Administrador
+            .put("/ajuste", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
+            // CU-07 Registrar venta y comprobante: Cajero
+            .put("/venta", ImmutableSet.of(Rol.CAJERO))
+            .put("/Pages/ventas", ImmutableSet.of(Rol.CAJERO))
+            // CU-09 Consultar kardex y exportar: Administrador y Almacenero
+            .put("/kardex", ImmutableSet.of(Rol.ADMINISTRADOR, Rol.ALMACENERO))
             .build();
 
     @Override

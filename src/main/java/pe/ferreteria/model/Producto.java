@@ -18,8 +18,15 @@ public class Producto {
     private final String categoria;
     private final String unidad;
     private final BigDecimal precio;
+    private final int stock;
+    private final int stockMinimo;
 
     public Producto(String sku, String nombre, String categoria, String unidad, BigDecimal precio) {
+        this(sku, nombre, categoria, unidad, precio, 0, 5);
+    }
+
+    public Producto(String sku, String nombre, String categoria, String unidad, BigDecimal precio,
+                    int stock, int stockMinimo) {
         this.sku = StringUtils.trimToEmpty(sku).toUpperCase(Locale.ROOT);
         this.nombre = StringUtils.trimToEmpty(nombre);
         this.categoria = StringUtils.trimToEmpty(categoria);
@@ -34,6 +41,9 @@ public class Producto {
         Preconditions.checkArgument(precio != null && precio.signum() >= 0
                         && precio.compareTo(new BigDecimal("999999999.99")) <= 0,
                 "El precio debe estar entre 0 y 999999999.99.");
+        Preconditions.checkArgument(stock >= 0 && stockMinimo >= 0, "El stock no puede ser negativo.");
+        this.stock = stock;
+        this.stockMinimo = stockMinimo;
         try {
             this.precio = precio.setScale(2, RoundingMode.UNNECESSARY);
         } catch (ArithmeticException exception) {
@@ -46,4 +56,14 @@ public class Producto {
     public String getCategoria() { return categoria; }
     public String getUnidad() { return unidad; }
     public BigDecimal getPrecio() { return precio; }
+    public int getStock() { return stock; }
+    public int getStockMinimo() { return stockMinimo; }
+
+    /** Estado para alertas: "Crítico" si queda la mitad del mínimo o menos, "Bajo" si no supera el mínimo. */
+    public String getEstadoStock() {
+        if (stock <= stockMinimo / 2) {
+            return "Crítico";
+        }
+        return stock <= stockMinimo ? "Bajo" : "Normal";
+    }
 }

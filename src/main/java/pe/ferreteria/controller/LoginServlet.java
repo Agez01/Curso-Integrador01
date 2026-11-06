@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (SesionUtil.usuarioActual(request) != null) {
-            response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/dashboard");
             return;
         }
         request.getRequestDispatcher("/login.jsp").forward(request, response);
@@ -57,7 +57,13 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        Optional<Usuario> usuario = usuarioDAO.autenticar(nombre, clave);
+        Optional<Usuario> usuario;
+        try {
+            usuario = usuarioDAO.autenticar(nombre, clave);
+        } catch (pe.ferreteria.dao.DatosException exception) {
+            mostrarError(request, response, "El servicio no está disponible. Intenta nuevamente en unos minutos.");
+            return;
+        }
         if (usuario.isPresent()) {
             intentosFallidos.invalidate(nombre);
             // Nueva sesión para evitar fijación de sesión.
@@ -66,7 +72,7 @@ public class LoginServlet extends HttpServlet {
             }
             request.getSession(true).setAttribute(SesionUtil.ATRIBUTO_USUARIO, usuario.get());
             LOGGER.info("Inicio de sesión correcto: usuario='{}', rol={}.", nombre, usuario.get().getRol());
-            response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/dashboard");
             return;
         }
 

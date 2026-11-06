@@ -16,8 +16,83 @@
 }
 
 .dashboard-shortcuts,
-.reception-fields {
+.reception-fields,
+.reception-header-fields {
   gap: 12px;
+}
+
+.reception-header-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.reception-field {
+  min-width: 0;
+}
+
+.reception-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.reception-field input,
+.reception-control {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  box-sizing: border-box;
+  font: inherit;
+  background: var(--white);
+  color: var(--ink);
+}
+
+.reception-field input:focus,
+.reception-control:focus {
+  outline: 2px solid rgba(232, 99, 10, .25);
+  border-color: var(--orange);
+}
+
+.reception-form,
+.reception-layout,
+.reception-layout > .card {
+  min-width: 0;
+}
+
+.reception-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  align-items: start;
+}
+
+.reception-lines {
+  table-layout: fixed;
+}
+
+.reception-lines th:nth-child(1) {
+  width: 62%;
+}
+
+.reception-lines th:nth-child(2) {
+  width: 22%;
+}
+
+.reception-lines th:nth-child(3) {
+  width: 16%;
+}
+
+.reception-quantity {
+  text-align: right;
+}
+
+.reception-remove-line {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px;
 }
 
 .shortcut-btn {
@@ -78,6 +153,138 @@
   margin-top: 20px;
 }
 
+.product-modal .catalogo-form {
+  width: min(680px, calc(100vw - 40px));
+  margin: 0;
+  padding: 22px;
+  box-sizing: border-box;
+}
+
+.product-modal {
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.product-modal::backdrop {
+  background: rgba(18, 24, 31, .62);
+}
+
+.product-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.product-modal-header .section-title {
+  margin: 0;
+}
+
+.product-modal-close {
+  display: inline-grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.product-modal-close:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.product-modal-actions {
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.product-modal-actions .catalogo-submit {
+  width: auto;
+  min-width: 190px;
+}
+
+.discard-modal {
+  width: min(440px, calc(100vw - 32px));
+  max-width: none;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.discard-modal::backdrop {
+  background: rgba(18, 24, 31, .68);
+}
+
+.discard-card {
+  padding: 24px;
+  text-align: center;
+}
+
+.discard-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 12px;
+  place-items: center;
+  border: 2px solid var(--orange);
+  border-radius: 50%;
+  color: var(--orange);
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.discard-card .section-title {
+  margin: 0 0 8px;
+}
+
+.discard-card p {
+  margin: 0;
+  color: #6B7280;
+  line-height: 1.5;
+}
+
+.discard-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.discard-actions .btn {
+  min-height: 40px;
+}
+
+.discard-confirm {
+  border: 1px solid #922B21;
+  border-radius: 3px;
+  background: #922B21;
+  color: var(--white);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.discard-confirm:hover {
+  background: #7A2119;
+}
+
 .catalogo-fields {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -130,12 +337,43 @@
 .catalogo-error { background: #FBE4E1; color: #922B21; }
 
 @media (max-width: 560px) {
+  .reception-layout,
+  .reception-header-fields {
+    grid-template-columns: 1fr;
+  }
+
   .catalogo-fields {
     grid-template-columns: 1fr;
+  }
+
+  .product-modal .catalogo-form {
+    width: calc(100vw - 24px);
+    padding: 18px;
+  }
+
+  .product-modal-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .product-modal-actions .btn {
+    width: 100%;
+  }
+
+  .discard-card {
+    padding: 20px;
+  }
+
+  .discard-actions {
+    flex-direction: column-reverse;
   }
 }
 
 @media (min-width: 561px) and (max-width: 900px) {
+  .reception-layout {
+    grid-template-columns: 1fr;
+  }
+
   .catalogo-fields {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

@@ -27,7 +27,7 @@ public class KardexServlet extends HttpServlet {
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment; filename=\"kardex.xlsx\"");
             try {
-                excelExportador.exportarKardex(kardexDAO.listar(), response.getOutputStream());
+                excelExportador.exportarKardex(kardexDAO.buscar(request.getParameter("q"), request.getParameter("tipo")), response.getOutputStream());
                 LOGGER.info("Kardex exportado a Excel.");
             } catch (IOException exception) {
                 LOGGER.error("No se pudo generar la descarga del kardex.", exception);
@@ -36,7 +36,14 @@ public class KardexServlet extends HttpServlet {
             return;
         }
 
-        request.setAttribute("movimientos", kardexDAO.listar());
-        request.getRequestDispatcher("/kardex.jsp").forward(request, response);
+        request.setAttribute("busqueda", org.apache.commons.lang3.StringUtils.trimToEmpty(request.getParameter("q")));
+        request.setAttribute("tipoFiltro", org.apache.commons.lang3.StringUtils.trimToEmpty(request.getParameter("tipo")));
+        try {
+            request.setAttribute("movimientos", kardexDAO.buscar(request.getParameter("q"), request.getParameter("tipo")));
+        } catch (pe.ferreteria.dao.DatosException exception) {
+            request.setAttribute("error", "No se pudo consultar el kardex. Revisa la conexión a la base de datos.");
+            request.setAttribute("movimientos", java.util.List.of());
+        }
+        request.getRequestDispatcher("/WEB-INF/views/kardex.jsp").forward(request, response);
     }
 }

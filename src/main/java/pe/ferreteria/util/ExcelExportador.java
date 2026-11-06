@@ -16,7 +16,7 @@ import java.util.List;
 /** Genera el reporte de movimientos en formato Excel .xlsx. */
 public class ExcelExportador {
     private static final String[] ENCABEZADOS = {
-            "fecha", "sku", "producto", "tipo", "cantidad", "stock resultante", "usuario"
+            "fecha", "sku", "producto", "tipo", "cantidad", "stock resultante", "usuario", "detalle"
     };
 
     public void exportarKardex(List<MovimientoKardex> movimientos, OutputStream salida)
@@ -50,6 +50,7 @@ public class ExcelExportador {
                 registro.createCell(4).setCellValue(movimiento.getCantidad());
                 registro.createCell(5).setCellValue(movimiento.getStockResultante());
                 registro.createCell(6).setCellValue(movimiento.getUsuario());
+                registro.createCell(7).setCellValue(movimiento.getMotivo());
             }
 
             for (int columna = 0; columna < ENCABEZADOS.length; columna++) {
