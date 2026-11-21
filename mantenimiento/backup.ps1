@@ -40,13 +40,13 @@ try {
     if (Test-Path -LiteralPath $nuevo) { throw "Ya existe $(Split-Path -Leaf $nuevo); espera un segundo y reintenta." }
     $archivo = $nuevo
     $r = Invoke-Nativo $pgDump @('-h', $Servidor, '-p', "$Puerto", '-U', $Usuario, '-d', $Base,
-        '-F', 'c', '--no-owner', '--no-password', '-f', (Q $archivo))
+        '-F', 'c', '--no-owner', '--no-password', '-f', $archivo)
     if ($r.Codigo -ne 0) { throw "pg_dump fallo (codigo $($r.Codigo)): $($r.Error)" }
 
     if (-not (Test-Path -LiteralPath $archivo) -or (Get-Item -LiteralPath $archivo).Length -eq 0) {
         throw 'El archivo de backup no se creo o esta vacio.'
     }
-    $v = Invoke-Nativo $pgRestore @('--list', (Q $archivo))
+    $v = Invoke-Nativo $pgRestore @('--list', $archivo)
     if ($v.Codigo -ne 0) { throw "El backup no paso la verificacion de pg_restore: $($v.Error)" }
 
     $kb = [math]::Round((Get-Item -LiteralPath $archivo).Length / 1KB, 1)

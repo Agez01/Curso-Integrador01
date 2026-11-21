@@ -24,7 +24,7 @@ $psql = ''
 function Ejecutar-Sql {
     param([string]$Base, [string]$Sentencia)
     return Invoke-Nativo $psql @('-h', $Servidor, '-p', "$Puerto", '-U', $Usuario, '-d', $Base,
-        '--no-password', '-v', 'ON_ERROR_STOP=1', '-t', '-A', '-c', (Q $Sentencia))
+        '--no-password', '-v', 'ON_ERROR_STOP=1', '-t', '-A', '-c', $Sentencia)
 }
 
 try {
@@ -32,6 +32,7 @@ try {
     $pgRestore = Buscar-ProgramaPostgres 'pg_restore' $CarpetaPgBin
     if (-not $Archivo) {
         $ultimo = Get-ChildItem -LiteralPath (Join-Path $script:RaizProyecto 'backups') -Filter '*.dump' -ErrorAction Stop |
+            Where-Object { $_.BaseName -notmatch '_previo_' } |
             Sort-Object LastWriteTime -Descending | Select-Object -First 1
         if (-not $ultimo) { throw 'No hay backups en la carpeta backups.' }
         $Archivo = $ultimo.FullName
@@ -45,7 +46,7 @@ try {
     $creada = $true
 
     $r = Invoke-Nativo $pgRestore @('-h', $Servidor, '-p', "$Puerto", '-U', $Usuario, '-d', $BaseTemporal,
-        '--no-owner', '--no-password', '--exit-on-error', (Q $Archivo))
+        '--no-owner', '--no-password', '--exit-on-error', $Archivo)
     if ($r.Codigo -ne 0) { throw "La restauracion de prueba fallo: $($r.Error)" }
 
     $conteo = Ejecutar-Sql $BaseTemporal "SELECT 'usuarios=' || (SELECT count(*) FROM usuario) || ', productos=' || (SELECT count(*) FROM producto) || ', ventas=' || (SELECT count(*) FROM venta) || ', movimientos=' || (SELECT count(*) FROM movimiento_kardex)"

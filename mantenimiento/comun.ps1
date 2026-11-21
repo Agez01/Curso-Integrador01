@@ -30,11 +30,15 @@ function Buscar-ProgramaPostgres {
     }
     $comando = Get-Command $Nombre -ErrorAction SilentlyContinue
     if ($comando) { return $comando.Source }
-    $candidato = Get-ChildItem -Path ('C:\Program Files\PostgreSQL\*\bin\' + $Nombre + '.exe') -ErrorAction SilentlyContinue |
+    $candidatos = @(
+        Get-ChildItem -Path ('C:\Program Files\PostgreSQL\*\bin\' + $Nombre + '.exe') -ErrorAction SilentlyContinue
+        Get-ChildItem -Path ('D:\Program Files\PostgreSQL\*\bin\' + $Nombre + '.exe') -ErrorAction SilentlyContinue
+    )
+    $candidato = $candidatos |
         Sort-Object { [int]($_.Directory.Parent.Name -replace '\D', '0') } -Descending |
         Select-Object -First 1
     if ($candidato) { return $candidato.FullName }
-    throw "No se encontro $Nombre.exe. Usa -CarpetaPgBin 'C:\Program Files\PostgreSQL\<version>\bin'."
+    throw "No se encontro $Nombre.exe. Usa -CarpetaPgBin '<directorio de PostgreSQL>\bin'."
 }
 
 # Ejecuta un programa externo sin que su salida de error rompa el script. Devuelve Codigo, Salida y Error.
@@ -43,13 +47,23 @@ function Invoke-Nativo {
     $archivoErr = [System.IO.Path]::GetTempFileName()
     $archivoOut = [System.IO.Path]::GetTempFileName()
     try {
-        $proceso = Start-Process -FilePath $Programa -ArgumentList $Argumentos -NoNewWindow -Wait -PassThru `
-            -RedirectStandardError $archivoErr -RedirectStandardOutput $archivoOut
-        $proceso.WaitForExit()
+        $preferenciaAnterior = $ErrorActionPreference
+        try {
+            $ErrorActionPreference = 'Continue'
+            & $Programa @Argumentos 2> $archivoErr 1> $archivoOut
+            $codigo = $LASTEXITCODE
+        }
+        finally {
+            $ErrorActionPreference = $preferenciaAnterior
+        }
+        $salida = Get-Content -LiteralPath $archivoOut -Raw
+        $errorTexto = Get-Content -LiteralPath $archivoErr -Raw
+        if ($null -eq $salida) { $salida = '' }
+        if ($null -eq $errorTexto) { $errorTexto = '' }
         return [pscustomobject]@{
-            Codigo = $proceso.ExitCode
-            Salida = ([string](Get-Content -LiteralPath $archivoOut -Raw)).Trim()
-            Error  = ([string](Get-Content -LiteralPath $archivoErr -Raw)).Trim()
+            Codigo = $codigo
+            Salida = ([string]$salida).Trim()
+            Error  = ([string]$errorTexto).Trim()
         }
     }
     finally {

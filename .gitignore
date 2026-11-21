@@ -1,6 +1,7 @@
 # Compilación y logs
 target/
 logs/
+backups/
 # Configuración local de cada integrante (rutas de su PC)
 run.config.ps1
 # IDEs
