@@ -1,0 +1,7 @@
+# Ferresys - tareas programadas en Linux. Instalar con:  crontab -e   (pega estas lineas)
+# Ajusta la ruta /opt/ferresys. Requiere ~/.pgpass (chmod 600) con la clave de ferresys y de postgres.
+#
+# min hora dia-mes mes dia-semana  comando
+0 2 * * *   /opt/ferresys/mantenimiento/backup.sh            >> /opt/ferresys/mantenimiento/logs/cron.log 2>&1
+0 3 * * 0   /opt/ferresys/mantenimiento/limpiar-logs.sh      >> /opt/ferresys/mantenimiento/logs/cron.log 2>&1
+0 4 * * 0   /opt/ferresys/mantenimiento/probar-restauracion.sh >> /opt/ferresys/mantenimiento/logs/cron.log 2>&1
